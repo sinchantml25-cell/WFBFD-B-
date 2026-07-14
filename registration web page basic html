@@ -1,0 +1,48 @@
+<html>
+<head>
+    <title>Registration Page</title>
+
+</head>
+<body>
+    <h1>Registration Form</h1>
+    <form action="/submit_registration" method="post">
+    <fieldset>
+        <label >First name:</label><br>
+        <input type="text" id="firstname" name="firstname"><br><br>
+          <label >Middle name:</label><br>
+          <input type="text" id="middlename" name="middlename" ><br><br>
+          <label >Last name:</label><br>
+          <input type="text" id="lastname" name="lastname" ><br><br>
+          <label >DOB :</label><br>
+          <input type="date" id="dat" name="date" ><br><br>
+        <label >Email:</label><br>
+        <input type="email" id="email" name="email"><br><br>
+        <lable for="age">Age</lable><br>
+        <input type="number" id="age" name="age" max="25" min="16">
+    </fieldset><br>
+
+      <fieldset>
+      <p>Studying in year:</p>
+      <form>
+        <input type="radio" id="year1" name="year">
+        <label for="year1">1st year</label><br>
+        <input type="radio" id="year2" name="year">
+        <label for="year2">2nd year</label><br>
+        <input type="radio" id="year3" name="year">
+        <label for="year3">3rd year</label><br>
+          <input type="radio" id="year4" name="year">
+        <label for="year4">4th year</label>
+      </form>
+      <p>Branch: </p>
+      <input type="radio" id="branchit" name="branch">
+        <label for="branchit">IT</label><br>
+        <input type="radio" id="branchml" name="branch">
+        <label for="branchml">AI ML</label><br><br>
+      
+        <label for="usn">USN:</label><br>
+        <input type="usn" id="usn" name="usn"><br><br>
+      </fieldset>
+        <input type="submit" value="Register">
+    
+    </form>
+    </html>

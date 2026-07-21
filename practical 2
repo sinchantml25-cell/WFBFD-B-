@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Profile | Ananya Deshmukh</title>
+    <style>
+         body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        header, section, footer {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-left: 5px solid #0056b3;
+        }
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #eee;
+        }
+        h1, h2 {
+            margin-top: 0;
+            color: #111;
+        }
+        .contact-links a {
+            margin-right: 15px;
+            color: #0056b3;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 5px;
+        }
+        .contact-links a:hover {
+            text-decoration: underline;
+        }
+        ul {
+            padding-left: 20px;
+        }
+    </style>
+    
+</head>
+<body>
+
+    <!-- Header contains core personal identity and headshot -->
+    <header>
+        <img src="https://static.vecteezy.com/system/resources/previews/025/869/587/original/profile-image-of-woman-avatar-for-social-networks-with-half-circle-fashion-bright-illustration-in-trendy-style-free-vector.jpg" alt="Professional headshot of Ananya Deshmukh" class="profile-img">
+        <div>
+            <h1>Ananya Deshmukh</h1>
+            <p><strong>Target Role:</strong> Frontend Developer Intern</p>
+            <p>Aspiring software engineer with a strong foundation in web technologies, UI/UX principles, and object-oriented programming. Proven ability to build clean, structured code and passionate about creating intuitive user interfaces.</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- Education Section -->
+        <section aria-labelledby="education-heading">
+            <h2 id="education-heading">Education</h2>
+            <article>
+                <h3>Bachelor of Engineering (B.E.) in Computer Science and Engineering</h3>
+                <p><strong>Nagpur Institute of Technology & Management</strong> | Expected Graduation: June 2028</p>
+                <ul>
+                    <li><strong>Academic Performance:</strong> 8.6 CGPA</li>
+                    <li><strong>Relevant Coursework:</strong> Object-Oriented Programming (C++), Data Structures & Algorithms, Web Storage APIs, Database Management Systems.</li>
+                </ul>
+            </article>
+        </section>
+
+        <!-- Technical Skills & Hobbies Section -->
+        <section aria-labelledby="skills-hobbies-heading">
+            <h2 id="skills-hobbies-heading">Skills & Interests</h2>
+            
+            <h3>Core Competencies</h3>
+            <ul>
+                <li><strong>Languages & Tools:</strong> C++, HTML5, CSS3, JavaScript (ES6), Git, VS Code</li>
+                <li><strong>Soft Skills:</strong> Analytical Problem Solving, Attention to Detail, Team Collaboration</li>
+            </ul>
+
+            <h3>Hobbies & Extracurriculars</h3>
+            <ul>
+                <li><strong>Digital Media & Design:</strong> Designing visual assets, logos, and promotional graphics for college technical festivals.</li>
+                <li><strong>Crafting & Precision Arts:</strong> Creating intricate loom-beaded jewelry and patterns, developing strong focus and patience.</li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Footer contains critical, easily accessible action items (Contact Info) -->
+    <footer aria-labelledby="contact-heading">
+        <h2 id="contact-heading">Contact Information</h2>
+        <p>Feel free to reach out for internship or full-time opportunities.</p>
+        <nav class="contact-links" aria-label="Contact Links">
+            <a href="mailto:ananya.deshmukh.dev@example.com">📧 ananya.deshmukh.dev@example.com</a>
+            <a href="tel:+919876543211">📞 +91 98765 43211</a>
+            <a href="https://linkedin.com/in/ananyadeshmukh-demo" target="_blank" rel="noopener noreferrer">💼 LinkedIn Profile</a>
+            <a href="https://github.com/ananyadeshmukh-demo" target="_blank" rel="noopener noreferrer">💻 GitHub Profile</a>
+        </nav>
+    </footer>
+
+</body>
+</html>

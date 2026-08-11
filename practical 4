@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>CM25054 Sinchan Abhishek Tambe</title>
+    <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="bg-rose-50 text-gray-900 font-sans antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- Header & Navigation -->
+  <header class="bg-white/90 backdrop-blur-md border-b border-rose-100 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Brand Logo -->
+        <div class="flex-shrink-0 flex items-center space-x-2">
+          <span class="text-2xl font-bold tracking-widest text-rose-950">KĀYA</span>
+          <span class="text-xs font-semibold uppercase tracking-widest bg-rose-100 text-rose-900 px-2 py-0.5 rounded">Botanics</span>
+        </div>
+
+        <!-- Navigation Links (Hidden on Mobile, Flex on Desktop) -->
+        <nav class="hidden md:flex space-x-8 text-sm font-medium">
+          <a href="#" class="text-rose-950 border-b-2 border-rose-800 pb-1">Best Sellers</a>
+          <a href="#" class="text-gray-600 hover:text-rose-900 transition">Serums</a>
+          <a href="#" class="text-gray-600 hover:text-rose-900 transition">Sun Protection</a>
+          <a href="#" class="text-gray-600 hover:text-rose-900 transition">Moisturizers</a>
+        </nav>
+
+        <!-- Action Icons / Cart -->
+        <div class="flex items-center space-x-4">
+          <button class="text-gray-700 hover:text-rose-900 focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+          </button>
+          <button class="relative text-gray-700 hover:text-rose-900 focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
+            <span class="absolute -top-1 -right-2 bg-rose-800 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">2</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="bg-linear-to-r from-rose-100 to-red-100/70 py-12 lg:py-16 px-4 sm:px-6 lg:px-8 text-center border-b border-rose-200/60"
+  style="background-image:url('//i.pinimg.com/736x/30/c6/02/30c60274f30d01fb7fdfc3c1bdd3a328.jpg')">
+    <div class="max-w-3xl mx-auto flex flex-col items-center">
+      <span class="text-xs font-bold tracking-widest text-rose-900 uppercase mb-2">Clean, Dermat-Tested Actives</span>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-light text-rose-950 mb-4 tracking-tight">
+        Formulated for Indian Skin Concerns
+      </h1>
+      <p class="text-base sm:text-lg text-rose-900/80 max-w-xl mb-6 leading-relaxed">
+        Lightweight hydration, barrier repair, and SPF protection engineered specifically for warm, humid climates.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <button class="bg-rose-900 text-white px-6 py-3 rounded text-sm font-medium hover:bg-rose-950 shadow-sm transition">
+          Shop The Routine
+        </button>
+        <button class="border border-rose-900 text-rose-950 px-6 py-3 rounded text-sm font-medium hover:bg-rose-900 hover:text-white transition">
+          Take Skin Quiz
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Showcase Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow w-full">
+    
+    <!-- Filter Header (Flex Layout) -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-6 border-b border-rose-200 mb-8 gap-4">
+      <div>
+        <h2 class="text-xl font-semibold text-rose-950">Daily Essentials Showcase</h2>
+        <p class="text-sm text-rose-900/70">Free shipping on Indian orders above ₹999</p>
+      </div>
+      <div class="flex items-center space-x-4">
+        <label for="sort" class="text-sm text-gray-700 font-medium shrink-0">Sort by:</label>
+        <select id="sort" class="bg-white border border-rose-200 text-gray-800 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-rose-800 shadow-sm">
+          <option>Popularity</option>
+          <option>Price: Low to High</option>
+          <option>Price: High to Low</option>
+          <option>Customer Ratings</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Product Grid (Flexbox with Responsive Breakpoints) -->
+    <div class="flex flex-wrap -mx-3">
+
+      <!-- Product Card 1: Serum -->
+      <div class="w-full sm:w-1/2 lg:w-1/4 px-3 mb-8 flex">
+        <div class="bg-white rounded-lg border border-rose-100 flex flex-col justify-between w-full group hover:shadow-xl hover:border-rose-200 transition duration-200">
+          <div>
+            <div class="relative overflow-hidden bg-rose-50 rounded-t-lg aspect-square">
+              <img 
+                src="https://cdn.shopify.com/s/files/1/0609/6096/4855/files/01_fbd4aac7-cdad-4232-a4b3-753f11496994.jpg?v=1785497010&width=1080&quality=60" 
+                alt="10% Niacinamide Face Serum" 
+                class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+              />
+              <span class="absolute top-3 left-3 bg-rose-900 text-white text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wider">Best Seller</span>
+            </div>
+            <div class="p-4">
+              <span class="text-xs text-rose-800 font-bold uppercase tracking-wider">Serums • 30 ml</span>
+              <h3 class="text-sm font-semibold text-gray-900 mt-1">10% Niacinamide & Zinc Clarifying Serum</h3>
+              <p class="text-xs text-gray-600 mt-1">Reduces blemishes & balances excess sebum.</p>
+              <div class="flex items-center justify-between mt-3">
+                <p class="text-base font-bold text-gray-900">₹699</p>
+                <span class="text-xs text-rose-900 bg-rose-100 px-2 py-0.5 rounded font-semibold">★ 4.8 (1.2k)</span>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 pt-0">
+            <button class="w-full bg-rose-900 text-white py-2.5 rounded text-xs font-semibold uppercase tracking-wider hover:bg-rose-950 transition">
+              Add to Bag
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Card 2: Sunscreen -->
+      <div class="w-full sm:w-1/2 lg:w-1/4 px-3 mb-8 flex">
+        <div class="bg-white rounded-lg border border-rose-100 flex flex-col justify-between w-full group hover:shadow-xl hover:border-rose-200 transition duration-200">
+          <div>
+            <div class="relative overflow-hidden bg-rose-50 rounded-t-lg aspect-square">
+              <img 
+                src="https://cdn.shopify.com/s/files/1/0609/6096/4855/files/FXN-OCGS80_31-a.jpg?v=1783945435&width=1080&quality=60" 
+                alt="SPF 50+ Invisible Fluid Sunscreen" 
+                class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+              />
+              <span class="absolute top-3 left-3 bg-amber-700 text-white text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wider">Zero White Cast</span>
+            </div>
+            <div class="p-4">
+              <span class="text-xs text-rose-800 font-bold uppercase tracking-wider">Sun Protection • 50 g</span>
+              <h3 class="text-sm font-semibold text-gray-900 mt-1">SPF 50+ PA++++ Dewy Sun Fluid</h3>
+              <p class="text-xs text-gray-600 mt-1">Lightweight fluid protection without stickiness.</p>
+              <div class="flex items-center justify-between mt-3">
+                <p class="text-base font-bold text-gray-900">₹599</p>
+                <span class="text-xs text-rose-900 bg-rose-100 px-2 py-0.5 rounded font-semibold">★ 4.9 (2.4k)</span>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 pt-0">
+            <button class="w-full bg-rose-900 text-white py-2.5 rounded text-xs font-semibold uppercase tracking-wider hover:bg-rose-950 transition">
+              Add to Bag
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Card 3: Moisturizer -->
+      <div class="w-full sm:w-1/2 lg:w-1/4 px-3 mb-8 flex">
+        <div class="bg-white rounded-lg border border-rose-100 flex flex-col justify-between w-full group hover:shadow-xl hover:border-rose-200 transition duration-200">
+          <div>
+            <div class="relative overflow-hidden bg-rose-50 rounded-t-lg aspect-square">
+              <img 
+                src="https://tse4.mm.bing.net/th/id/OIP.gYpNoAkjzH3IXOgVpWSnggHaHa?r=0&w=1080&h=1080&rs=1&pid=ImgDetMain&o=7&rm=3" 
+                alt="Ceramide Oil-Free Gel Moisturizer" 
+                class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+              />
+            </div>
+            <div class="p-4">
+              <span class="text-xs text-rose-800 font-bold uppercase tracking-wider">Moisturizers • 100 g</span>
+              <h3 class="text-sm font-semibold text-gray-900 mt-1">Ceramide & Hyaluronic Gel Cream</h3>
+              <p class="text-xs text-gray-600 mt-1">72-hour moisture lock for damaged skin barrier.</p>
+              <div class="flex items-center justify-between mt-3">
+                <div class="flex items-baseline space-x-1.5">
+                  <p class="text-base font-bold text-gray-900">₹749</p>
+                  <p class="text-xs text-gray-400 line-through">₹899</p>
+                </div>
+                <span class="text-xs text-rose-900 bg-rose-100 px-2 py-0.5 rounded font-semibold">★ 4.7 (890)</span>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 pt-0">
+            <button class="w-full bg-rose-900 text-white py-2.5 rounded text-xs font-semibold uppercase tracking-wider hover:bg-rose-950 transition">
+              Add to Bag
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Card 4: Face Cleanser -->
+      <div class="w-full sm:w-1/2 lg:w-1/4 px-3 mb-8 flex">
+        <div class="bg-white rounded-lg border border-rose-100 flex flex-col justify-between w-full group hover:shadow-xl hover:border-rose-200 transition duration-200">
+          <div>
+            <div class="relative overflow-hidden bg-rose-50 rounded-t-lg aspect-square">
+              <img 
+                src="https://tse2.mm.bing.net/th/id/OIP.Ik0UTD9JlrOwywtnJvt5sQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" 
+                alt="Gentle AHA BHA Cleanser" 
+                class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+              />
+              <span class="absolute top-3 left-3 bg-red-700 text-white text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wider">New</span>
+            </div>
+            <div class="p-4">
+              <span class="text-xs text-rose-800 font-bold uppercase tracking-wider">Cleansers • 150 ml</span>
+              <h3 class="text-sm font-semibold text-gray-900 mt-1">Gentle Salicylic Acid Face Wash</h3>
+              <p class="text-xs text-gray-600 mt-1">Deeply cleanses pores without stripping moisture.</p>
+              <div class="flex items-center justify-between mt-3">
+                <p class="text-base font-bold text-gray-900">₹449</p>
+                <span class="text-xs text-rose-900 bg-rose-100 px-2 py-0.5 rounded font-semibold">★ 4.6 (410)</span>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 pt-0">
+            <button class="w-full bg-rose-900 text-white py-2.5 rounded text-xs font-semibold uppercase tracking-wider hover:bg-rose-950 transition">
+              Add to Bag
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-rose-200 py-8 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center space-x-2">
+          <p class="text-xs text-gray-600">&copy; 2026 KĀYA Botanics Pvt. Ltd. All rights reserved.</p>
+        </div>
+        <div class="flex space-x-6 text-xs text-gray-600">
+          <a href="#" class="hover:text-rose-900">Privacy Policy</a>
+          <a href="#" class="hover:text-rose-900">Shipping Policy (Pan-India)</a>
+          <a href="#" class="hover:text-rose-900">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

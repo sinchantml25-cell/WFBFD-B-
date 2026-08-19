@@ -1,17 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Personal Finance Dashboard</title>
 
-    <title>Digital Personal Finance Dashboard</title>
+  <!-- Tailwind CSS via CDN — no installation or build step needed -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Our own custom stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
+  <!-- ===== Header ===== -->
+  <header>
     <h1>Digital Personal Finance Dashboard</h1>
+    <p>Track your income, expenses, and savings goals</p>
+  </header>
 
-    <p>Manage your income, expenses and savings goals.</p>
+  <main>
+
+    <!-- ===== Dashboard Summary Cards — built in Phase 2 ===== -->
+    <section id="dashboard-cards">
+      <!-- Total Income, Total Expenses, Balance, Savings Rate cards will go here -->
+    </section>
+
+    <!-- ===== Add Transaction Form — built in Phase 3 ===== -->
+    <section id="add-transaction">
+      <h2>Add Transaction</h2>
+      <!-- Form goes here -->
+    </section>
+
+    <!-- ===== Transactions Table — built in Phase 4 ===== -->
+    <section id="transactions">
+      <h2>Transactions</h2>
+      <!-- Table goes here -->
+    </section>
+
+    <!-- ===== Savings Goals — built in Phase 9 ===== -->
+    <section id="savings-goals">
+      <h2>Savings Goals</h2>
+      <!-- Goals list goes here -->
+    </section>
+
+    <!-- ===== Expense Analysis Chart — built in Phase 10 ===== -->
+    <section id="expense-analysis">
+      <h2>Expense Analysis</h2>
+      <!-- Chart.js chart goes here -->
+    </section>
+
+  </main>
+
+  <!-- Our own JavaScript, loaded last so the page content exists before the script runs -->
+  <script src="js/app.js"></script>
 
 </body>
 </html>

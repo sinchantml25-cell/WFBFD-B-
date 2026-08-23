@@ -107,13 +107,16 @@
                    class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
           </div>
 
-          <div class="flex items-end">
+                   <div class="flex items-end gap-2">
             <button type="submit" id="submit-btn"
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded transition">
               Add Transaction
             </button>
+            <button type="button" id="cancel-edit-btn"
+                    class="hidden bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-2 px-4 rounded transition whitespace-nowrap">
+              Cancel
+            </button>
           </div>
-
         </form>
 
         <p id="form-error" class="text-red-600 text-sm mt-3 hidden"></p>
@@ -121,9 +124,29 @@
     </section>
 
     <!-- ===== Transactions Table — built in Phase 4 ===== -->
-    <section id="transactions">
-      <h2>Transactions</h2>
-      <!-- Table goes here -->
+        <!-- ===== Transactions Table ===== -->
+    <section id="transactions" class="max-w-6xl mx-auto px-4 mt-8">
+      <div class="bg-white rounded-lg shadow p-5">
+        <h2 class="text-lg font-bold text-slate-800 mb-4">Transactions</h2>
+
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[600px] text-left">
+            <thead>
+              <tr class="border-b border-slate-200 text-slate-500 text-sm">
+                <th class="px-4 py-2">Date</th>
+                <th class="px-4 py-2">Type</th>
+                <th class="px-4 py-2">Category</th>
+                <th class="px-4 py-2">Amount</th>
+                <th class="px-4 py-2">Description</th>
+                <th class="px-4 py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="transaction-table-body">
+              <!-- Rows are added here by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
     </section>
 
     <!-- ===== Savings Goals — built in Phase 9 ===== -->

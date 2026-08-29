@@ -12,6 +12,8 @@ let savingsGoals = [];
 let nextGoalId = 1;
 let editingGoalId = null;
 
+let expenseChart = null; // holds the current Chart.js instance so we can destroy it before redrawing
+
 
 // ---------- DOM Elements ----------
 
@@ -42,6 +44,10 @@ const goalFormError = document.getElementById("goal-form-error");
 const goalSubmitBtn = document.getElementById("goal-submit-btn");
 const goalCancelBtn = document.getElementById("goal-cancel-btn");
 const goalsList = document.getElementById("goals-list");
+
+// Expense chart
+const expenseChartCanvas = document.getElementById("expense-chart");
+const chartEmptyMessage = document.getElementById("chart-empty-message");
 
 
 // ---------- Initialization ----------
@@ -248,8 +254,6 @@ function deleteTransaction(id) {
 
   refreshUI();
   saveTransactions();
-
-  // Phase 10 will add: updateExpenseChart();
 }
 
 
@@ -306,9 +310,12 @@ function updateDashboard() {
   savingsRateEl.textContent = `${savingsRate.toFixed(1)}%`;
 }
 
+// Runs the table redraw, dashboard recalculation, and chart update together,
+// since almost every change to `transactions` needs all three to happen
 function refreshUI() {
   displayTransactions();
   updateDashboard();
+  updateExpenseChart();
 }
 
 
@@ -441,7 +448,7 @@ function calculateGoalProgress(goal) {
   }
 
   const rawProgress = (goal.saved / goal.target) * 100;
-  return Math.min(rawProgress, 100); // never show more than 100%, even if saved > target
+  return Math.min(rawProgress, 100);
 }
 
 function calculateGoalRemaining(goal) {
@@ -521,7 +528,6 @@ function loadTransactions() {
     transactions = JSON.parse(storedTransactions);
   }
 
-  // Make sure new transactions get ids that don't collide with loaded ones
   if (transactions.length > 0) {
     const existingIds = transactions.map(function (transaction) {
       return transaction.id;
@@ -547,6 +553,71 @@ function loadSavingsGoals() {
     });
     nextGoalId = Math.max(...existingIds) + 1;
   }
+}
+
+
+// ---------- Chart Functions ----------
+
+// Builds a { categoryName: totalAmount } object from all expense transactions
+function calculateCategoryTotals() {
+  const totals = {};
+
+  transactions.forEach(function (transaction) {
+    if (transaction.type === "expense") {
+      const category = transaction.category;
+
+      if (!totals[category]) {
+        totals[category] = 0; // first time seeing this category — start at 0
+      }
+
+      totals[category] += transaction.amount;
+    }
+  });
+
+  return totals;
+}
+
+// Redraws the doughnut chart from the current transactions
+function updateExpenseChart() {
+  const categoryTotals = calculateCategoryTotals();
+  const labels = Object.keys(categoryTotals);
+  const data = Object.values(categoryTotals);
+
+  // Destroy the previous chart before drawing a new one —
+  // Chart.js throws an error if a canvas already has an active chart
+  if (expenseChart) {
+    expenseChart.destroy();
+    expenseChart = null;
+  }
+
+  if (labels.length === 0) {
+    expenseChartCanvas.classList.add("hidden");
+    chartEmptyMessage.classList.remove("hidden");
+    return;
+  }
+
+  expenseChartCanvas.classList.remove("hidden");
+  chartEmptyMessage.classList.add("hidden");
+
+  expenseChart = new Chart(expenseChartCanvas, {
+    type: "doughnut",
+    data: {
+      labels: labels,
+      datasets: [{
+        data: data,
+        backgroundColor: [
+          "#f97316", "#3b82f6", "#a855f7", "#ef4444",
+          "#22c55e", "#eab308", "#64748b", "#ec4899"
+        ]
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: "bottom" }
+      }
+    }
+  });
 }
 
 

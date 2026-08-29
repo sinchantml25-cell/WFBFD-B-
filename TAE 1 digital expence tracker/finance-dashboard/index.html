@@ -192,16 +192,26 @@
         </div>
       </div>
     </section>
-    <!-- ===== Expense Analysis Chart — built in Phase 10 ===== -->
-    <section id="expense-analysis">
-      <h2>Expense Analysis</h2>
-      <!-- Chart.js chart goes here -->
-    </section>
+        <!-- ===== Expense Analysis ===== -->
+    <section id="expense-analysis" class="max-w-6xl mx-auto px-4 mt-8 mb-10">
+      <div class="bg-white rounded-lg shadow p-5">
+        <h2 class="text-lg font-bold text-slate-800 mb-4">Expense Analysis</h2>
 
+        <div class="relative max-w-md mx-auto">
+          <canvas id="expense-chart"></canvas>
+          <p id="chart-empty-message" class="hidden text-center text-slate-400 py-10">
+            No expenses yet. Add one to see the breakdown.
+          </p>
+        </div>
+      </div>
+    </section>
+    
   </main>
 
   <!-- Our own JavaScript, loaded last so the page content exists before the script runs -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/app.js"></script>
+
 
 </body>
 </html>

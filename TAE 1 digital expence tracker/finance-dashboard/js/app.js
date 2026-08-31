@@ -12,7 +12,10 @@ let savingsGoals = [];
 let nextGoalId = 1;
 let editingGoalId = null;
 
-let expenseChart = null; // holds the current Chart.js instance so we can destroy it before redrawing
+let expenseChart = null;
+
+let searchQuery = "";     // current search text, always stored lowercase
+let currentFilter = "all"; // "all" | "income" | "expense"
 
 
 // ---------- DOM Elements ----------
@@ -28,6 +31,10 @@ const formError = document.getElementById("form-error");
 const transactionTableBody = document.getElementById("transaction-table-body");
 const submitBtn = document.getElementById("submit-btn");
 const cancelEditBtn = document.getElementById("cancel-edit-btn");
+
+// Search and filter
+const searchInput = document.getElementById("search-input");
+const filterTypeSelect = document.getElementById("filter-type");
 
 // Dashboard cards
 const totalIncomeEl = document.getElementById("total-income");
@@ -184,21 +191,27 @@ function cancelEditing() {
   cancelEditBtn.classList.add("hidden");
 }
 
+// Redraws the table using only the transactions that match the
+// current search text and filter type
 function displayTransactions() {
   transactionTableBody.innerHTML = "";
 
-  if (transactions.length === 0) {
+  const visibleTransactions = getVisibleTransactions();
+
+  if (visibleTransactions.length === 0) {
+    const message = transactions.length === 0
+      ? "No transactions yet. Add one above to get started."
+      : "No transactions match your search or filter.";
+
     transactionTableBody.innerHTML = `
       <tr>
-        <td colspan="6" class="text-center text-slate-400 py-6">
-          No transactions yet. Add one above to get started.
-        </td>
+        <td colspan="6" class="text-center text-slate-400 py-6">${message}</td>
       </tr>
     `;
     return;
   }
 
-  transactions.forEach(function (transaction) {
+  visibleTransactions.forEach(function (transaction) {
     const rowHtml = createTransactionRow(transaction);
     transactionTableBody.insertAdjacentHTML("beforeend", rowHtml);
   });
@@ -258,6 +271,8 @@ function deleteTransaction(id) {
 
 
 // ---------- Dashboard Calculations ----------
+// NOTE: these intentionally always use the full `transactions` array,
+// never the filtered/searched subset — totals should reflect everything.
 
 function calculateIncome() {
   let total = 0;
@@ -310,8 +325,6 @@ function updateDashboard() {
   savingsRateEl.textContent = `${savingsRate.toFixed(1)}%`;
 }
 
-// Runs the table redraw, dashboard recalculation, and chart update together,
-// since almost every change to `transactions` needs all three to happen
 function refreshUI() {
   displayTransactions();
   updateDashboard();
@@ -558,7 +571,6 @@ function loadSavingsGoals() {
 
 // ---------- Chart Functions ----------
 
-// Builds a { categoryName: totalAmount } object from all expense transactions
 function calculateCategoryTotals() {
   const totals = {};
 
@@ -567,7 +579,7 @@ function calculateCategoryTotals() {
       const category = transaction.category;
 
       if (!totals[category]) {
-        totals[category] = 0; // first time seeing this category — start at 0
+        totals[category] = 0;
       }
 
       totals[category] += transaction.amount;
@@ -577,14 +589,11 @@ function calculateCategoryTotals() {
   return totals;
 }
 
-// Redraws the doughnut chart from the current transactions
 function updateExpenseChart() {
   const categoryTotals = calculateCategoryTotals();
   const labels = Object.keys(categoryTotals);
   const data = Object.values(categoryTotals);
 
-  // Destroy the previous chart before drawing a new one —
-  // Chart.js throws an error if a canvas already has an active chart
   if (expenseChart) {
     expenseChart.destroy();
     expenseChart = null;
@@ -621,10 +630,55 @@ function updateExpenseChart() {
 }
 
 
+// ---------- Search and Filter Functions ----------
+
+// Keeps only transactions matching the current type filter ("all" keeps everything)
+function filterTransactions(transactionsList) {
+  if (currentFilter === "all") {
+    return transactionsList;
+  }
+
+  return transactionsList.filter(function (transaction) {
+    return transaction.type === currentFilter;
+  });
+}
+
+// Keeps only transactions whose category or description contains the search text
+function searchTransactions(transactionsList) {
+  if (searchQuery === "") {
+    return transactionsList;
+  }
+
+  return transactionsList.filter(function (transaction) {
+    const category = transaction.category.toLowerCase();
+    const description = transaction.description.toLowerCase();
+    return category.includes(searchQuery) || description.includes(searchQuery);
+  });
+}
+
+// Combines both: filter by type first, then search within that result
+function getVisibleTransactions() {
+  const filtered = filterTransactions(transactions);
+  return searchTransactions(filtered);
+}
+
+function handleSearchInput(event) {
+  searchQuery = event.target.value.trim().toLowerCase();
+  displayTransactions();
+}
+
+function handleFilterChange(event) {
+  currentFilter = event.target.value;
+  displayTransactions();
+}
+
+
 // ---------- Event Listeners ----------
 transactionForm.addEventListener("submit", handleTransactionFormSubmit);
 transactionTableBody.addEventListener("click", handleTransactionTableClick);
 cancelEditBtn.addEventListener("click", cancelEditing);
+searchInput.addEventListener("input", handleSearchInput);
+filterTypeSelect.addEventListener("change", handleFilterChange);
 
 goalForm.addEventListener("submit", handleGoalFormSubmit);
 goalsList.addEventListener("click", handleGoalsListClick);

@@ -5,224 +5,361 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Digital Personal Finance Dashboard</title>
 
-  <!-- Tailwind CSS via CDN — no installation or build step needed -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Our own custom stylesheet -->
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-slate-100 min-h-screen">
+<body class="bg-[#EDF2F7] text-slate-800 min-h-screen antialiased selection:bg-indigo-600 selection:text-white relative">
 
+  <!-- Light Ambient Background Glows -->
+  <div class="fixed -top-24 left-1/4 w-[500px] h-[500px] bg-indigo-200/40 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+  <div class="fixed top-1/3 right-10 w-[450px] h-[450px] bg-sky-200/40 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+  <div class="fixed -bottom-10 left-10 w-[400px] h-[400px] bg-emerald-100/50 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
 
-    <!-- ===== Header ===== -->
-  <header class="bg-slate-800 text-white py-6 px-4 shadow-md">
-    <div class="max-w-6xl mx-auto">
-      <h1 class="text-2xl md:text-3xl font-bold">Digital Personal Finance Dashboard</h1>
-      <p class="text-slate-300 mt-1">Track your income, expenses, and savings goals</p>
+  <!-- ===== High-Contrast Navigation Bar ===== -->
+  <header class="bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-900 border-b border-indigo-900/40 text-white sticky top-0 z-30 shadow-lg shadow-slate-950/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+
+      <div class="flex items-center gap-3.5">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30 border border-indigo-400/30">
+          <i class="fa-solid fa-chart-line text-base"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
+            Finance<span class="text-indigo-400">Flow</span>
+          </h1>
+          <p class="text-xs text-indigo-200/70 font-medium">Digital Personal Finance Dashboard</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 self-start sm:self-auto">
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 shadow-xs">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Auto-Saved
+        </span>
+      </div>
+
     </div>
   </header>
 
-  <main>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
 
-       <!-- ===== Dashboard Summary Cards ===== -->
-    <section id="dashboard-cards" class="max-w-6xl mx-auto px-4 mt-6">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <!-- ===== Dashboard Summary Cards ===== -->
+    <section id="dashboard-cards">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
 
         <!-- Total Income Card -->
-        <div class="bg-white rounded-lg shadow p-5 border-l-4 border-green-500">
-          <p class="text-sm text-slate-500 font-medium">Total Income</p>
-          <p id="total-income" class="text-2xl font-bold text-green-600 mt-1">₹0</p>
+        <div class="bg-white rounded-2xl p-5 border border-emerald-200/90 shadow-sm hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-200 relative overflow-hidden group">
+          <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-400 via-teal-500 to-emerald-600"></div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-800">Total Income</span>
+            <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/30 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-arrow-trend-up text-sm"></i>
+            </div>
+          </div>
+          <p id="total-income" class="text-3xl font-extrabold text-slate-900 mt-3 tracking-tight">₹0</p>
+          <div class="mt-3 flex items-center gap-1.5 text-xs text-emerald-700 font-semibold">
+            <span class="bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-lg">Income Stream</span>
+          </div>
         </div>
 
         <!-- Total Expenses Card -->
-        <div class="bg-white rounded-lg shadow p-5 border-l-4 border-red-500">
-          <p class="text-sm text-slate-500 font-medium">Total Expenses</p>
-          <p id="total-expenses" class="text-2xl font-bold text-red-600 mt-1">₹0</p>
+        <div class="bg-white rounded-2xl p-5 border border-rose-200/90 shadow-sm hover:shadow-lg hover:shadow-rose-500/10 transition-all duration-200 relative overflow-hidden group">
+          <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-rose-500 via-red-500 to-pink-600"></div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-rose-800">Total Expenses</span>
+            <div class="w-10 h-10 rounded-xl bg-rose-500 text-white flex items-center justify-center shadow-md shadow-rose-500/30 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-arrow-trend-down text-sm"></i>
+            </div>
+          </div>
+          <p id="total-expenses" class="text-3xl font-extrabold text-slate-900 mt-3 tracking-tight">₹0</p>
+          <div class="mt-3 flex items-center gap-1.5 text-xs text-rose-700 font-semibold">
+            <span class="bg-rose-50 border border-rose-200 px-2.5 py-0.5 rounded-lg">Total Outflow</span>
+          </div>
         </div>
 
         <!-- Current Balance Card -->
-        <div class="bg-white rounded-lg shadow p-5 border-l-4 border-blue-500">
-          <p class="text-sm text-slate-500 font-medium">Current Balance</p>
-          <p id="current-balance" class="text-2xl font-bold text-blue-600 mt-1">₹0</p>
+        <div class="bg-white rounded-2xl p-5 border border-indigo-200/90 shadow-sm hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-200 relative overflow-hidden group">
+          <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-500 via-indigo-600 to-violet-600"></div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-indigo-800">Current Balance</span>
+            <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-600/30 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-scale-balanced text-sm"></i>
+            </div>
+          </div>
+          <p id="current-balance" class="text-3xl font-extrabold text-indigo-950 mt-3 tracking-tight">₹0</p>
+          <div class="mt-3 flex items-center gap-1.5 text-xs text-indigo-700 font-semibold">
+            <span class="bg-indigo-50 border border-indigo-200 px-2.5 py-0.5 rounded-lg">Net Available</span>
+          </div>
         </div>
 
         <!-- Savings Rate Card -->
-        <div class="bg-white rounded-lg shadow p-5 border-l-4 border-amber-500">
-          <p class="text-sm text-slate-500 font-medium">Savings Rate</p>
-          <p id="savings-rate" class="text-2xl font-bold text-amber-600 mt-1">0%</p>
+        <div class="bg-white rounded-2xl p-5 border border-amber-200/90 shadow-sm hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-200 relative overflow-hidden group">
+          <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500"></div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-amber-900">Savings Rate</span>
+            <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shadow-md shadow-amber-500/30 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-piggy-bank text-sm"></i>
+            </div>
+          </div>
+          <p id="savings-rate" class="text-3xl font-extrabold text-slate-900 mt-3 tracking-tight">0%</p>
+          <div class="mt-3 flex items-center gap-1.5 text-xs text-amber-800 font-semibold">
+            <span class="bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-lg">Savings Ratio</span>
+          </div>
         </div>
 
       </div>
     </section>
 
-    <!-- ===== Add Transaction Form — built in Phase 3 ===== -->
-       <!-- ===== Add Transaction Form ===== -->
-    <section id="add-transaction" class="max-w-6xl mx-auto px-4 mt-8">
-      <div class="bg-white rounded-lg shadow p-5">
-        <h2 class="text-lg font-bold text-slate-800 mb-4">Add Transaction</h2>
+    <!-- ===== Dashboard Main Content Grid ===== -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-        <form id="transaction-form" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- Left Column: Forms and Transactions Table (7 Cols) -->
+      <div class="lg:col-span-7 space-y-8">
 
-          <div>
-            <label for="date" class="block text-sm font-medium text-slate-600 mb-1">Date</label>
-            <input type="date" id="date" name="date"
-                   class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <!-- ===== Add Transaction Form Card ===== -->
+        <section id="add-transaction">
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 relative">
+            <div class="flex items-center justify-between mb-5">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm shadow-md shadow-indigo-600/20">
+                  <i class="fa-solid fa-plus font-bold"></i>
+                </div>
+                <h2 class="text-base font-extrabold text-slate-900">Add New Transaction</h2>
+              </div>
+              <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg border border-indigo-100">Quick Entry</span>
+            </div>
+
+            <form id="transaction-form" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+              <div>
+                <label for="date" class="block text-xs font-bold text-slate-700 mb-1.5">Date</label>
+                <input type="date" id="date" name="date"
+                       class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 font-medium focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition">
+              </div>
+
+              <div>
+                <label for="type" class="block text-xs font-bold text-slate-700 mb-1.5">Transaction Type</label>
+                <select id="type" name="type"
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 font-medium focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition cursor-pointer">
+                  <option value="">Select type</option>
+                  <option value="income" class="text-emerald-700 font-bold">● Income</option>
+                  <option value="expense" class="text-rose-700 font-bold">● Expense</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="category" class="block text-xs font-bold text-slate-700 mb-1.5">Category</label>
+                <select id="category" name="category"
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 font-medium focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition cursor-pointer">
+                  <option value="">Select category</option>
+                  <option value="Salary">💼 Salary</option>
+                  <option value="Food">🍔 Food & Groceries</option>
+                  <option value="Transport">🚗 Travel & Transport</option>
+                  <option value="Shopping">🛍️ Shopping</option>
+                  <option value="Bills">⚡ Utilities & Bills</option>
+                  <option value="Education">🎓 Education</option>
+                  <option value="Entertainment">🎬 Entertainment</option>
+                  <option value="Other">✨ Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="amount" class="block text-xs font-bold text-slate-700 mb-1.5">Amount (₹)</label>
+                <input type="number" id="amount" name="amount" min="0" step="0.01" placeholder="0.00"
+                       class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 font-bold placeholder:font-normal focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition">
+              </div>
+
+              <div class="sm:col-span-2">
+                <label for="description" class="block text-xs font-bold text-slate-700 mb-1.5">Description</label>
+                <input type="text" id="description" name="description" placeholder="e.g. Monthly Broadband Subscription"
+                       class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 font-medium focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition">
+              </div>
+
+              <div class="sm:col-span-2 flex items-center gap-3 pt-2">
+                <button type="submit" id="submit-btn"
+                        class="flex-1 bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-700 hover:from-indigo-500 hover:to-violet-600 text-white font-bold py-3 px-5 rounded-xl shadow-md shadow-indigo-600/30 active:scale-[0.99] transition duration-150 flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-circle-plus text-sm"></i>
+                  Add Transaction
+                </button>
+                <button type="button" id="cancel-edit-btn"
+                        class="hidden bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 px-5 rounded-xl transition">
+                  Cancel
+                </button>
+              </div>
+            </form>
+
+            <p id="form-error" class="text-rose-700 text-xs font-semibold mt-3 bg-rose-50 border border-rose-200 px-4 py-2.5 rounded-xl hidden"></p>
           </div>
+        </section>
 
-          <div>
-            <label for="type" class="block text-sm font-medium text-slate-600 mb-1">Type</label>
-            <select id="type" name="type"
-                    class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
-              <option value="">Select type</option>
-              <option value="income">Income</option>
-              <option value="expense">Expense</option>
-            </select>
+        <!-- ===== Transactions Table Card ===== -->
+        <section id="transactions">
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm shadow-md shadow-indigo-600/20">
+                  <i class="fa-solid fa-list-ul"></i>
+                </div>
+                <div>
+                  <h2 class="text-base font-extrabold text-slate-900">Recent Transactions</h2>
+                  <p class="text-xs text-slate-500 font-medium">Activity and historical log</p>
+                </div>
+              </div>
+
+              <!-- Search & Filter Controls -->
+              <div class="flex items-center gap-2.5">
+                <div class="relative flex-1 sm:w-52">
+                  <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                  <input type="text" id="search-input" placeholder="Search..."
+                         class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3.5 py-2 text-xs text-slate-900 font-medium focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition">
+                </div>
+
+                <select id="filter-type"
+                        class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition cursor-pointer">
+                  <option value="all">All Types</option>
+                  <option value="income">Income</option>
+                  <option value="expense">Expense</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-200">
+              <table class="w-full min-w-[600px] text-left text-sm">
+                <thead>
+                  <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-700 text-xs font-extrabold uppercase tracking-wider">
+                    <th class="px-4 py-3.5">Date</th>
+                    <th class="px-4 py-3.5">Type</th>
+                    <th class="px-4 py-3.5">Category</th>
+                    <th class="px-4 py-3.5">Amount</th>
+                    <th class="px-4 py-3.5">Description</th>
+                    <th class="px-4 py-3.5 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="transaction-table-body" class="divide-y divide-slate-100 font-medium">
+                  <!-- Rows inserted here by JavaScript -->
+                </tbody>
+              </table>
+            </div>
           </div>
+        </section>
 
-          <div>
-            <label for="category" class="block text-sm font-medium text-slate-600 mb-1">Category</label>
-            <select id="category" name="category"
-                    class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
-              <option value="">Select category</option>
-              <option value="Salary">Salary</option>
-              <option value="Food">Food</option>
-              <option value="Transport">Transport</option>
-              <option value="Shopping">Shopping</option>
-              <option value="Bills">Bills</option>
-              <option value="Education">Education</option>
-              <option value="Entertainment">Entertainment</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="amount" class="block text-sm font-medium text-slate-600 mb-1">Amount (₹)</label>
-            <input type="number" id="amount" name="amount" min="0" step="0.01" placeholder="0.00"
-                   class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
-          </div>
-
-          <div class="sm:col-span-2 lg:col-span-2">
-            <label for="description" class="block text-sm font-medium text-slate-600 mb-1">Description</label>
-            <input type="text" id="description" name="description" placeholder="e.g. Lunch with friends"
-                   class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
-          </div>
-
-                   <div class="flex items-end gap-2">
-            <button type="submit" id="submit-btn"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded transition">
-              Add Transaction
-            </button>
-            <button type="button" id="cancel-edit-btn"
-                    class="hidden bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-2 px-4 rounded transition whitespace-nowrap">
-              Cancel
-            </button>
-          </div>
-        </form>
-
-        <p id="form-error" class="text-red-600 text-sm mt-3 hidden"></p>
       </div>
-    </section>
 
-        <!-- ===== Transactions Table ===== -->
-    <section id="transactions" class="max-w-6xl mx-auto px-4 mt-8">
-      <div class="bg-white rounded-lg shadow p-5">
-        <h2 class="text-lg font-bold text-slate-800 mb-4">Transactions</h2>
+      <!-- Right Column: Expense Analysis & Savings Goals (5 Cols) -->
+      <div class="lg:col-span-5 space-y-8">
 
-        <div class="flex flex-col sm:flex-row gap-3 mb-4">
-          <input type="text" id="search-input" placeholder="Search by category or description..."
-                 class="flex-1 border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <!-- ===== Expense Analysis Card ===== -->
+        <section id="expense-analysis">
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6">
+            <div class="flex items-center gap-3 mb-5">
+              <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm shadow-md shadow-indigo-600/20">
+                <i class="fa-solid fa-chart-pie"></i>
+              </div>
+              <div>
+                <h2 class="text-base font-extrabold text-slate-900">Expense Analysis</h2>
+                <p class="text-xs text-slate-500 font-medium">Breakdown by category</p>
+              </div>
+            </div>
 
-          <select id="filter-type"
-                  class="border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
-            <option value="all">All</option>
-            <option value="income">Income</option>
-            <option value="expense">Expense</option>
-          </select>
-        </div>
+            <div class="relative max-w-xs mx-auto py-2 min-h-[220px] flex items-center justify-center">
+              <canvas id="expense-chart"></canvas>
+              <div id="chart-empty-message" class="hidden text-center py-8">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center mx-auto mb-3 shadow-xs">
+                  <i class="fa-solid fa-chart-pie text-lg"></i>
+                </div>
+                <p class="text-sm font-bold text-slate-700">No expenses recorded yet</p>
+                <p class="text-xs text-slate-400 mt-1">Add expenses to visualize breakdown</p>
+              </div>
+            </div>
+          </div>
+        </section>
 
-        <div class="overflow-x-auto">
-          <table class="w-full min-w-[600px] text-left">
-            <thead>
-              <tr class="border-b border-slate-200 text-slate-500 text-sm">
-                <th class="px-4 py-2">Date</th>
-                <th class="px-4 py-2">Type</th>
-                <th class="px-4 py-2">Category</th>
-                <th class="px-4 py-2">Amount</th>
-                <th class="px-4 py-2">Description</th>
-                <th class="px-4 py-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="transaction-table-body">
-              <!-- Rows are added here by JavaScript -->
-            </tbody>
-          </table>
-        </div>
+        <!-- ===== Savings Goals Card ===== -->
+        <section id="savings-goals">
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6">
+            <div class="flex items-center gap-3 mb-5">
+              <div class="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center text-sm shadow-md shadow-teal-600/20">
+                <i class="fa-solid fa-bullseye"></i>
+              </div>
+              <div>
+                <h2 class="text-base font-extrabold text-slate-900">Savings Goals</h2>
+                <p class="text-xs text-slate-500 font-medium">Target tracker & progress</p>
+              </div>
+            </div>
+
+            <form id="goal-form" class="space-y-3.5 mb-6">
+              <div>
+                <label for="goal-name" class="block text-xs font-bold text-slate-700 mb-1">Goal Name</label>
+                <input type="text" id="goal-name" name="goal-name" placeholder="e.g. New Gaming Laptop"
+                       class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm text-slate-900 font-medium focus:bg-white focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-600 transition">
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label for="goal-target" class="block text-xs font-bold text-slate-700 mb-1">Target (₹)</label>
+                  <input type="number" id="goal-target" name="goal-target" min="0" step="0.01" placeholder="0.00"
+                         class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm text-slate-900 font-bold focus:bg-white focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-600 transition">
+                </div>
+
+                <div>
+                  <label for="goal-saved" class="block text-xs font-bold text-slate-700 mb-1">Saved (₹)</label>
+                  <input type="number" id="goal-saved" name="goal-saved" min="0" step="0.01" placeholder="0.00"
+                         class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm text-slate-900 font-bold focus:bg-white focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-600 transition">
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2 pt-1">
+                <button type="submit" id="goal-submit-btn"
+                        class="flex-1 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-bold py-2.5 px-4 rounded-xl shadow-md shadow-teal-600/25 active:scale-[0.99] transition duration-150 flex items-center justify-center gap-2 text-sm">
+                  <i class="fa-solid fa-bullseye text-xs"></i>
+                  Add Goal
+                </button>
+                <button type="button" id="goal-cancel-btn"
+                        class="hidden bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 px-4 rounded-xl transition text-sm">
+                  Cancel
+                </button>
+              </div>
+            </form>
+
+            <p id="goal-form-error" class="text-rose-700 text-xs font-semibold mb-4 bg-rose-50 border border-rose-200 px-4 py-2.5 rounded-xl hidden"></p>
+
+            <div id="goals-list" class="space-y-3.5">
+              <!-- Goal cards inserted here by JavaScript -->
+            </div>
+          </div>
+        </section>
+
       </div>
-    </section>
 
-       <!-- ===== Savings Goals ===== -->
-    <section id="savings-goals" class="max-w-6xl mx-auto px-4 mt-8">
-      <div class="bg-white rounded-lg shadow p-5">
-        <h2 class="text-lg font-bold text-slate-800 mb-4">Savings Goals</h2>
+    </div>
 
-        <form id="goal-form" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-          <div>
-            <label for="goal-name" class="block text-sm font-medium text-slate-600 mb-1">Goal Name</label>
-            <input type="text" id="goal-name" name="goal-name" placeholder="e.g. New Laptop"
-                   class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400">
-          </div>
-
-          <div>
-            <label for="goal-target" class="block text-sm font-medium text-slate-600 mb-1">Target Amount (₹)</label>
-            <input type="number" id="goal-target" name="goal-target" min="0" step="0.01" placeholder="0.00"
-                   class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400">
-          </div>
-
-          <div>
-            <label for="goal-saved" class="block text-sm font-medium text-slate-600 mb-1">Amount Saved (₹)</label>
-            <input type="number" id="goal-saved" name="goal-saved" min="0" step="0.01" placeholder="0.00"
-                   class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400">
-          </div>
-
-          <div class="flex items-end gap-2">
-            <button type="submit" id="goal-submit-btn"
-                    class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 rounded transition">
-              Add Goal
-            </button>
-            <button type="button" id="goal-cancel-btn"
-                    class="hidden bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-2 px-4 rounded transition whitespace-nowrap">
-              Cancel
-            </button>
-          </div>
-        </form>
-
-        <p id="goal-form-error" class="text-red-600 text-sm mb-4 hidden"></p>
-
-        <div id="goals-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <!-- Goal cards inserted here by JavaScript -->
-        </div>
-      </div>
-    </section>
-        <!-- ===== Expense Analysis ===== -->
-    <section id="expense-analysis" class="max-w-6xl mx-auto px-4 mt-8 mb-10">
-      <div class="bg-white rounded-lg shadow p-5">
-        <h2 class="text-lg font-bold text-slate-800 mb-4">Expense Analysis</h2>
-
-        <div class="relative max-w-md mx-auto">
-          <canvas id="expense-chart"></canvas>
-          <p id="chart-empty-message" class="hidden text-center text-slate-400 py-10">
-            No expenses yet. Add one to see the breakdown.
-          </p>
-        </div>
-      </div>
-    </section>
-    
   </main>
 
-  <!-- Our own JavaScript, loaded last so the page content exists before the script runs -->
+  <!-- Chart.js & App Script -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/app.js"></script>
-
 
 </body>
 </html>

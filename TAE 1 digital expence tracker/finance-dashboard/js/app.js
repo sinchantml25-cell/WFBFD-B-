@@ -14,8 +14,8 @@ let editingGoalId = null;
 
 let expenseChart = null;
 
-let searchQuery = "";     // current search text, always stored lowercase
-let currentFilter = "all"; // "all" | "income" | "expense"
+let searchQuery = "";
+let currentFilter = "all";
 
 
 // ---------- DOM Elements ----------
@@ -69,6 +69,22 @@ function init() {
 }
 
 
+// ---------- Helper Functions ----------
+// Shared by both the transaction form and the goal form
+
+function highlightField(field) {
+  field.classList.add("ring-4", "ring-rose-500/20", "border-rose-500");
+  field.classList.remove("border-slate-200");
+}
+
+function clearFieldHighlights(fields) {
+  fields.forEach(function (field) {
+    field.classList.remove("ring-4", "ring-rose-500/20", "border-rose-500");
+    field.classList.add("border-slate-200");
+  });
+}
+
+
 // ---------- Transaction Functions ----------
 
 function handleTransactionFormSubmit(event) {
@@ -82,10 +98,10 @@ function handleTransactionFormSubmit(event) {
     description: descriptionInput.value.trim()
   };
 
-  const errorMessage = validateTransactionForm(formData);
+  const validationError = validateTransactionForm(formData);
 
-  if (errorMessage) {
-    showFormError(errorMessage);
+  if (validationError) {
+    showFormError(validationError.message, validationError.field);
     return;
   }
 
@@ -102,29 +118,37 @@ function handleTransactionFormSubmit(event) {
   refreshUI();
 }
 
+// Returns { field, message } for the first problem found, or null if valid
 function validateTransactionForm(data) {
   if (!data.date) {
-    return "Please select a date.";
+    return { field: dateInput, message: "Please select a date." };
   }
   if (!data.type) {
-    return "Please select a type (Income or Expense).";
+    return { field: typeInput, message: "Please select a type (Income or Expense)." };
   }
   if (!data.category) {
-    return "Please select a category.";
+    return { field: categoryInput, message: "Please select a category." };
   }
   if (isNaN(data.amount) || data.amount <= 0) {
-    return "Amount must be a number greater than zero.";
+    return { field: amountInput, message: "Amount must be a number greater than zero." };
   }
   return null;
 }
 
-function showFormError(message) {
+function showFormError(message, invalidField) {
   formError.textContent = message;
   formError.classList.remove("hidden");
+
+  clearFieldHighlights([dateInput, typeInput, categoryInput, amountInput]);
+
+  if (invalidField) {
+    highlightField(invalidField);
+  }
 }
 
 function hideFormError() {
   formError.classList.add("hidden");
+  clearFieldHighlights([dateInput, typeInput, categoryInput, amountInput]);
 }
 
 function addNewTransaction(formData) {
@@ -191,8 +215,6 @@ function cancelEditing() {
   cancelEditBtn.classList.add("hidden");
 }
 
-// Redraws the table using only the transactions that match the
-// current search text and filter type
 function displayTransactions() {
   transactionTableBody.innerHTML = "";
 
@@ -203,9 +225,12 @@ function displayTransactions() {
       ? "No transactions yet. Add one above to get started."
       : "No transactions match your search or filter.";
 
-    transactionTableBody.innerHTML = `
+       transactionTableBody.innerHTML = `
       <tr>
-        <td colspan="6" class="text-center text-slate-400 py-6">${message}</td>
+        <td colspan="6" class="text-center text-slate-400 py-10">
+          <i class="fa-solid fa-receipt text-2xl text-slate-300 mb-2 block"></i>
+          ${message}
+        </td>
       </tr>
     `;
     return;
@@ -221,22 +246,22 @@ function createTransactionRow(transaction) {
   const isIncome = transaction.type === "income";
 
   const typeBadge = isIncome
-    ? `<span class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-full">Income</span>`
-    : `<span class="bg-red-100 text-red-700 text-xs font-semibold px-2 py-1 rounded-full">Expense</span>`;
+    ? `<span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-lg border border-emerald-200"><i class="fa-solid fa-arrow-trend-up text-[10px]"></i> Income</span>`
+    : `<span class="inline-flex items-center gap-1.5 bg-rose-50 text-rose-700 text-xs font-bold px-2.5 py-1 rounded-lg border border-rose-200"><i class="fa-solid fa-arrow-trend-down text-[10px]"></i> Expense</span>`;
 
-  const amountClass = isIncome ? "text-green-600" : "text-red-600";
+  const amountClass = isIncome ? "text-emerald-600" : "text-rose-600";
   const amountSign = isIncome ? "+" : "-";
 
   return `
-    <tr class="border-b border-slate-100 hover:bg-slate-50">
-      <td class="px-4 py-3 text-sm text-slate-600">${transaction.date}</td>
-      <td class="px-4 py-3">${typeBadge}</td>
-      <td class="px-4 py-3 text-sm text-slate-600">${transaction.category}</td>
-      <td class="px-4 py-3 text-sm font-semibold ${amountClass}">${amountSign}₹${transaction.amount.toFixed(2)}</td>
-      <td class="px-4 py-3 text-sm text-slate-600">${transaction.description}</td>
-      <td class="px-4 py-3 text-sm whitespace-nowrap">
-        <button class="edit-btn text-blue-600 hover:underline mr-3" data-id="${transaction.id}">Edit</button>
-        <button class="delete-btn text-red-600 hover:underline" data-id="${transaction.id}">Delete</button>
+    <tr class="hover:bg-slate-50/80 transition-colors">
+      <td class="px-4 py-3.5 text-slate-600">${transaction.date}</td>
+      <td class="px-4 py-3.5">${typeBadge}</td>
+      <td class="px-4 py-3.5 text-slate-600">${transaction.category}</td>
+      <td class="px-4 py-3.5 font-extrabold ${amountClass}">${amountSign}₹${transaction.amount.toFixed(2)}</td>
+      <td class="px-4 py-3.5 text-slate-600">${transaction.description}</td>
+      <td class="px-4 py-3.5 text-right whitespace-nowrap">
+        <button class="edit-btn text-indigo-600 hover:text-indigo-800 font-semibold mr-3" data-id="${transaction.id}">Edit</button>
+        <button class="delete-btn text-rose-600 hover:text-rose-800 font-semibold" data-id="${transaction.id}">Delete</button>
       </td>
     </tr>
   `;
@@ -271,8 +296,6 @@ function deleteTransaction(id) {
 
 
 // ---------- Dashboard Calculations ----------
-// NOTE: these intentionally always use the full `transactions` array,
-// never the filtered/searched subset — totals should reflect everything.
 
 function calculateIncome() {
   let total = 0;
@@ -343,10 +366,10 @@ function handleGoalFormSubmit(event) {
     saved: parseFloat(goalSavedInput.value)
   };
 
-  const errorMessage = validateGoalForm(formData);
+  const validationError = validateGoalForm(formData);
 
-  if (errorMessage) {
-    showGoalFormError(errorMessage);
+  if (validationError) {
+    showGoalFormError(validationError.message, validationError.field);
     return;
   }
 
@@ -366,24 +389,31 @@ function handleGoalFormSubmit(event) {
 
 function validateGoalForm(data) {
   if (!data.name) {
-    return "Please enter a goal name.";
+    return { field: goalNameInput, message: "Please enter a goal name." };
   }
   if (isNaN(data.target) || data.target <= 0) {
-    return "Target amount must be greater than zero.";
+    return { field: goalTargetInput, message: "Target amount must be greater than zero." };
   }
   if (isNaN(data.saved) || data.saved < 0) {
-    return "Saved amount cannot be negative.";
+    return { field: goalSavedInput, message: "Saved amount cannot be negative." };
   }
   return null;
 }
 
-function showGoalFormError(message) {
+function showGoalFormError(message, invalidField) {
   goalFormError.textContent = message;
   goalFormError.classList.remove("hidden");
+
+  clearFieldHighlights([goalNameInput, goalTargetInput, goalSavedInput]);
+
+  if (invalidField) {
+    highlightField(invalidField);
+  }
 }
 
 function hideGoalFormError() {
   goalFormError.classList.add("hidden");
+  clearFieldHighlights([goalNameInput, goalTargetInput, goalSavedInput]);
 }
 
 function addSavingsGoal(formData) {
@@ -472,15 +502,15 @@ function calculateGoalRemaining(goal) {
 function displaySavingsGoals() {
   goalsList.innerHTML = "";
 
-  if (savingsGoals.length === 0) {
+   if (savingsGoals.length === 0) {
     goalsList.innerHTML = `
-      <p class="text-slate-400 text-center py-6 sm:col-span-2">
-        No savings goals yet. Add one above to start tracking.
-      </p>
+      <div class="text-center py-8">
+        <i class="fa-solid fa-bullseye text-2xl text-slate-300 mb-2 block"></i>
+        <p class="text-sm text-slate-400">No savings goals yet. Add one above to start tracking.</p>
+      </div>
     `;
     return;
   }
-
   savingsGoals.forEach(function (goal) {
     const cardHtml = createGoalCard(goal);
     goalsList.insertAdjacentHTML("beforeend", cardHtml);
@@ -493,23 +523,25 @@ function createGoalCard(goal) {
   const isComplete = goal.saved >= goal.target;
 
   return `
-    <div class="border border-slate-200 rounded-lg p-4">
+    <div class="bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-teal-300 transition-colors">
       <div class="flex justify-between items-start mb-2">
-        <h3 class="font-semibold text-slate-800">${goal.name}</h3>
-        ${isComplete ? '<span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded-full">Goal reached!</span>' : ""}
+        <h3 class="font-bold text-slate-800 text-sm">${goal.name}</h3>
+        ${isComplete
+          ? '<span class="inline-flex items-center gap-1 bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-check"></i> Goal reached</span>'
+          : ""}
       </div>
 
-      <p class="text-sm text-slate-500 mb-2">₹${goal.saved.toFixed(2)} / ₹${goal.target.toFixed(2)}</p>
+      <p class="text-xs text-slate-500 font-semibold mb-2">₹${goal.saved.toFixed(2)} <span class="text-slate-400 font-normal">of</span> ₹${goal.target.toFixed(2)}</p>
 
-      <div class="w-full bg-slate-200 rounded-full h-3 mb-2">
-        <div class="bg-emerald-500 h-3 rounded-full" style="width: ${progress}%"></div>
+      <div class="w-full bg-slate-200 rounded-full h-2.5 mb-2 overflow-hidden">
+        <div class="bg-gradient-to-r from-teal-500 to-emerald-500 h-2.5 rounded-full transition-all" style="width: ${progress}%"></div>
       </div>
 
-      <p class="text-xs text-slate-500 mb-3">${progress.toFixed(0)}% complete &middot; ₹${remaining.toFixed(2)} remaining</p>
+      <p class="text-[11px] text-slate-500 mb-3">${progress.toFixed(0)}% complete &middot; ₹${remaining.toFixed(2)} remaining</p>
 
-      <div class="text-sm">
-        <button class="goal-edit-btn text-blue-600 hover:underline mr-3" data-id="${goal.id}">Edit</button>
-        <button class="goal-delete-btn text-red-600 hover:underline" data-id="${goal.id}">Delete</button>
+      <div class="text-xs">
+        <button class="goal-edit-btn text-indigo-600 hover:text-indigo-800 font-semibold mr-3" data-id="${goal.id}">Edit</button>
+        <button class="goal-delete-btn text-rose-600 hover:text-rose-800 font-semibold" data-id="${goal.id}">Delete</button>
       </div>
     </div>
   `;
@@ -615,8 +647,8 @@ function updateExpenseChart() {
       datasets: [{
         data: data,
         backgroundColor: [
-          "#f97316", "#3b82f6", "#a855f7", "#ef4444",
-          "#22c55e", "#eab308", "#64748b", "#ec4899"
+           "#f97316", "#6366f1", "#a855f7", "#f43f5e",
+          "#eab308", "#14b8a6", "#94a3b8", "#ec4899"
         ]
       }]
     },
@@ -632,7 +664,6 @@ function updateExpenseChart() {
 
 // ---------- Search and Filter Functions ----------
 
-// Keeps only transactions matching the current type filter ("all" keeps everything)
 function filterTransactions(transactionsList) {
   if (currentFilter === "all") {
     return transactionsList;
@@ -643,7 +674,6 @@ function filterTransactions(transactionsList) {
   });
 }
 
-// Keeps only transactions whose category or description contains the search text
 function searchTransactions(transactionsList) {
   if (searchQuery === "") {
     return transactionsList;
@@ -656,7 +686,6 @@ function searchTransactions(transactionsList) {
   });
 }
 
-// Combines both: filter by type first, then search within that result
 function getVisibleTransactions() {
   const filtered = filterTransactions(transactions);
   return searchTransactions(filtered);
@@ -675,12 +704,16 @@ function handleFilterChange(event) {
 
 // ---------- Event Listeners ----------
 transactionForm.addEventListener("submit", handleTransactionFormSubmit);
+transactionForm.addEventListener("input", hideFormError);
+transactionForm.addEventListener("change", hideFormError);
 transactionTableBody.addEventListener("click", handleTransactionTableClick);
 cancelEditBtn.addEventListener("click", cancelEditing);
 searchInput.addEventListener("input", handleSearchInput);
 filterTypeSelect.addEventListener("change", handleFilterChange);
 
 goalForm.addEventListener("submit", handleGoalFormSubmit);
+goalForm.addEventListener("input", hideGoalFormError);
+goalForm.addEventListener("change", hideGoalFormError);
 goalsList.addEventListener("click", handleGoalsListClick);
 goalCancelBtn.addEventListener("click", cancelEditingGoal);
 

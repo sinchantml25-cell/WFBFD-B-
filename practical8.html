@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sinchan Tambe CM25054</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-emerald-100 via-teal-50 to-sky-100 min-h-screen flex items-center justify-center p-4">
+
+  <!-- Main Card Container (Soft green-blue tint with teal border) -->
+  <div class="bg-emerald-50/70 backdrop-blur-sm max-w-2xl w-full rounded-2xl shadow-xl border border-teal-200 overflow-hidden my-6">
+
+    <!-- Header Section (Vibrant Green to Deep Blue gradient) -->
+    <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-600 text-white p-6 text-center shadow-sm">
+      <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">S. B. JAIN INSTITUTE OF TECHNOLOGY,
+MANAGEMENT &amp; RESEARCH, NAGPUR.</h1>
+      <p class="text-emerald-100 text-sm mt-1">Student Admission Registration Portal (2026-27)</p>
+    </div>
+
+    <!-- Success Message Box (Hidden by default) -->
+    <div id="successBox" class="hidden m-6 p-4 bg-emerald-100/90 border border-emerald-400 rounded-xl text-emerald-900 flex items-center gap-3">
+      <span class="text-2xl">✅</span>
+      <div>
+        <h4 class="font-bold text-sm sm:text-base">Registration Successful!</h4>
+        <p class="text-xs sm:text-sm text-emerald-800">All fields verified. Your provisional admission application has been recorded.</p>
+      </div>
+    </div>
+
+    <!-- Registration Form -->
+    <form id="studentForm" class="p-6 sm:p-8 space-y-5" novalidate>
+
+      <!-- 2-Column Responsive Grid for Basic Details -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        
+        <!-- Full Name -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+            Full Name <span class="text-red-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="fullName" 
+            placeholder="e.g. Rahul Sharma"
+            class="w-full px-3.5 py-2.5 rounded-lg border border-teal-200 bg-white/95 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition"
+          >
+          <p id="error-fullName" class="text-red-500 text-xs mt-1 font-medium hidden"></p>
+        </div>
+
+        <!-- Email Address -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+            Email Address <span class="text-red-500">*</span>
+          </label>
+          <input 
+            type="email" 
+            id="email" 
+            placeholder="rahul@example.com"
+            class="w-full px-3.5 py-2.5 rounded-lg border border-teal-200 bg-white/95 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition"
+          >
+          <p id="error-email" class="text-red-500 text-xs mt-1 font-medium hidden"></p>
+        </div>
+
+        <!-- Mobile Number -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+            Mobile Number <span class="text-red-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="mobile" 
+            maxlength="10" 
+            placeholder="10-digit number"
+            class="w-full px-3.5 py-2.5 rounded-lg border border-teal-200 bg-white/95 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition"
+          >
+          <p id="error-mobile" class="text-red-500 text-xs mt-1 font-medium hidden"></p>
+        </div>
+
+        <!-- Date of Birth -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+            Date of Birth <span class="text-red-500">*</span>
+          </label>
+          <input 
+            type="date" 
+            id="dob" 
+            class="w-full px-3.5 py-2.5 rounded-lg border border-teal-200 bg-white/95 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition"
+          >
+          <p id="error-dob" class="text-red-500 text-xs mt-1 font-medium hidden"></p>
+        </div>
+
+      </div>
+
+      <!-- Gender Radio Buttons -->
+      <div>
+        <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">
+          Gender <span class="text-red-500">*</span>
+        </label>
+        <div class="flex items-center gap-6 text-sm text-slate-700">
+          <label class="inline-flex items-center gap-1.5 cursor-pointer">
+            <input type="radio" name="gender" value="Male" class="text-teal-600 focus:ring-teal-500 accent-teal-600">
+            <span>Male</span>
+          </label>
+          <label class="inline-flex items-center gap-1.5 cursor-pointer">
+            <input type="radio" name="gender" value="Female" class="text-teal-600 focus:ring-teal-500 accent-teal-600">
+            <span>Female</span>
+          </label>
+          <label class="inline-flex items-center gap-1.5 cursor-pointer">
+            <input type="radio" name="gender" value="Other" class="text-teal-600 focus:ring-teal-500 accent-teal-600">
+            <span>Other</span>
+          </label>
+        </div>
+        <p id="error-gender" class="text-red-500 text-xs mt-1 font-medium hidden"></p>
+      </div>
+
+      <!-- Course / Branch Dropdown -->
+      <div>
+        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+          Branch / Course <span class="text-red-500">*</span>
+        </label>
+        <select 
+          id="course" 
+          class="w-full px-3.5 py-2.5 rounded-lg border border-teal-200 bg-white/95 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 cursor-pointer transition"
+        >
+          <option value="">-- Choose Branch --</option>
+          <option value="Computer Science & Engineering">Computer Science & Engineering (CSE)</option>
+          <option value="Artificial Intelligence & Machine Learning">AI & Machine Learning</option>
+          <option value="Electrical & Electronics">Electrical Engineering</option>
+          <option value="Mechanical Engineering">Mechanical Engineering</option>
+          <option value="Civil Engineering">Civil Engineering</option>
+        </select>
+        <p id="error-course" class="text-red-500 text-xs mt-1 font-medium hidden"></p>
+      </div>
+
+      <!-- Address Textarea -->
+      <div>
+        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+          Permanent Address <span class="text-red-500">*</span>
+        </label>
+        <textarea 
+          id="address" 
+          rows="2" 
+          placeholder="House no., Street, City, State, PIN"
+          class="w-full px-3.5 py-2.5 rounded-lg border border-teal-200 bg-white/95 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 resize-none transition"
+        ></textarea>
+        <p id="error-address" class="text-red-500 text-xs mt-1 font-medium hidden"></p>
+      </div>
+
+      <!-- Passwords Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        
+        <!-- Password -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+            Password <span class="text-red-500">*</span>
+          </label>
+          <input 
+            type="password" 
+            id="password" 
+            placeholder="At least 8 characters"
+            class="w-full px-3.5 py-2.5 rounded-lg border border-teal-200 bg-white/95 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition"
+          >
+          <p id="error-password" class="text-red-500 text-xs mt-1 font-medium hidden"></p>
+        </div>
+
+        <!-- Confirm Password -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+            Confirm Password <span class="text-red-500">*</span>
+          </label>
+          <input 
+            type="password" 
+            id="confirmPassword" 
+            placeholder="Repeat password"
+            class="w-full px-3.5 py-2.5 rounded-lg border border-teal-200 bg-white/95 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition"
+          >
+          <p id="error-confirmPassword" class="text-red-500 text-xs mt-1 font-medium hidden"></p>
+        </div>
+
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="pt-2 flex flex-col sm:flex-row gap-3">
+        <button 
+          type="button" 
+          id="resetBtn" 
+          class="sm:w-1/3 py-2.5 px-4 rounded-lg border border-teal-300 bg-teal-50 hover:bg-teal-100 text-teal-800 font-semibold text-sm transition"
+        >
+          Reset Form
+        </button>
+
+        <button 
+          type="submit" 
+          class="sm:w-2/3 py-2.5 px-4 rounded-lg bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white font-bold text-sm shadow-md hover:shadow-lg transition"
+        >
+          Register Now
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <script>
+    // -------------------------------------------------------------
+    // STEP 1: Get references to form elements using getElementById
+    // -------------------------------------------------------------
+    var form = document.getElementById("studentForm");
+    var resetBtn = document.getElementById("resetBtn");
+    var successBox = document.getElementById("successBox");
+
+    var fullName = document.getElementById("fullName");
+    var email = document.getElementById("email");
+    var mobile = document.getElementById("mobile");
+    var dob = document.getElementById("dob");
+    var course = document.getElementById("course");
+    var address = document.getElementById("address");
+    var password = document.getElementById("password");
+    var confirmPassword = document.getElementById("confirmPassword");
+
+    // -------------------------------------------------------------
+    // STEP 2: Easy Helper Functions to show and clear error messages
+    // -------------------------------------------------------------
+    function showError(elementId, message) {
+      var errorElement = document.getElementById("error-" + elementId);
+      errorElement.innerText = message;
+      errorElement.classList.remove("hidden");
+
+      var inputElement = document.getElementById(elementId);
+      if (inputElement) {
+        inputElement.classList.remove("border-teal-200");
+        inputElement.classList.add("border-red-500");
+      }
+    }
+
+    function clearError(elementId) {
+      var errorElement = document.getElementById("error-" + elementId);
+      errorElement.innerText = "";
+      errorElement.classList.add("hidden");
+
+      var inputElement = document.getElementById(elementId);
+      if (inputElement) {
+        inputElement.classList.remove("border-red-500");
+        inputElement.classList.add("border-teal-200");
+      }
+    }
+
+    // -------------------------------------------------------------
+    // STEP 3: Form Submit Event Handler
+    // -------------------------------------------------------------
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      var isValid = true;
+
+      // 1. Full Name check
+      if (fullName.value.trim() === "") {
+        showError("fullName", "Please enter your full name.");
+        isValid = false;
+      } else {
+        clearError("fullName");
+      }
+
+      // 2. Email format check
+      var emailValue = email.value.trim();
+      if (emailValue === "") {
+        showError("email", "Please enter your email address.");
+        isValid = false;
+      } else if (emailValue.indexOf("@") === -1 || emailValue.indexOf(".") === -1) {
+        showError("email", "Email must include '@' and '.' (e.g. name@domain.com).");
+        isValid = false;
+      } else {
+        clearError("email");
+      }
+
+      // 3. Mobile Number check (numeric and exactly 10 digits)
+      var mobileValue = mobile.value.trim();
+      if (mobileValue === "") {
+        showError("mobile", "Please enter your mobile number.");
+        isValid = false;
+      } else if (isNaN(mobileValue) || mobileValue.length !== 10) {
+        showError("mobile", "Mobile number must be exactly 10 digits.");
+        isValid = false;
+      } else {
+        clearError("mobile");
+      }
+
+      // 4. Date of Birth check
+      if (dob.value === "") {
+        showError("dob", "Please select your date of birth.");
+        isValid = false;
+      } else {
+        clearError("dob");
+      }
+
+      // 5. Gender selection check
+      var selectedGender = document.querySelector('input[name="gender"]:checked');
+      if (!selectedGender) {
+        showError("gender", "Please select your gender.");
+        isValid = false;
+      } else {
+        clearError("gender");
+      }
+
+      // 6. Branch/Course selection check
+      if (course.value === "") {
+        showError("course", "Please choose a course branch.");
+        isValid = false;
+      } else {
+        clearError("course");
+      }
+
+      // 7. Address check
+      if (address.value.trim() === "") {
+        showError("address", "Please enter your permanent address.");
+        isValid = false;
+      } else {
+        clearError("address");
+      }
+
+      // 8. Password check (minimum 8 characters)
+      if (password.value === "") {
+        showError("password", "Please enter a password.");
+        isValid = false;
+      } else if (password.value.length < 8) {
+        showError("password", "Password must be at least 8 characters long.");
+        isValid = false;
+      } else {
+        clearError("password");
+      }
+
+      // 9. Confirm Password check
+      if (confirmPassword.value === "") {
+        showError("confirmPassword", "Please confirm your password.");
+        isValid = false;
+      } else if (confirmPassword.value !== password.value) {
+        showError("confirmPassword", "Passwords do not match.");
+        isValid = false;
+      } else {
+        clearError("confirmPassword");
+      }
+
+      // If all validations pass
+      if (isValid === true) {
+        successBox.classList.remove("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        successBox.classList.add("hidden");
+      }
+    });
+
+    // -------------------------------------------------------------
+    // STEP 4: Reset Button Handler
+    // -------------------------------------------------------------
+    resetBtn.addEventListener("click", function() {
+      form.reset();
+
+      var fieldIds = ["fullName", "email", "mobile", "dob", "gender", "course", "address", "password", "confirmPassword"];
+      for (var i = 0; i < fieldIds.length; i++) {
+        clearError(fieldIds[i]);
+      }
+
+      successBox.classList.add("hidden");
+    });
+  </script>
+</body>
+</html>

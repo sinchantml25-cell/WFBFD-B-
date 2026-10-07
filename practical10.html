@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sinchan Tambe CM25054</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Playfair Display & Space Grotesk -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            paper: '#FBF9F1',
+            ink: '#1A1A1A',
+            stampRed: '#D9381E',
+            stampBlue: '#1D4ED8',
+            stampGreen: '#15803D',
+            accentYellow: '#FACC15',
+          },
+          fontFamily: {
+            serif: ['Playfair Display', 'serif'],
+            sans: ['Space Grotesk', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #FBF9F1;
+      color: #1A1A1A;
+      background-image: radial-gradient(#e2dec9 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .paper-border {
+      border: 2px solid #1A1A1A;
+      box-shadow: 4px 4px 0px #1A1A1A;
+    }
+    .paper-border-sm {
+      border: 1.5px solid #1A1A1A;
+      box-shadow: 2px 2px 0px #1A1A1A;
+    }
+    .polaroid {
+      background: white;
+      padding: 8px 8px 18px 8px;
+      border: 1px solid #1A1A1A;
+      box-shadow: 3px 3px 0px rgba(0,0,0,0.15);
+    }
+    .tape {
+      background-color: rgba(250, 204, 21, 0.7);
+      transform: rotate(-3deg);
+    }
+  </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between p-4 md:p-8">
+
+  <!-- HEADER / BRANDING -->
+  <header class="max-w-6xl mx-auto w-full mb-8">
+    <div class="paper-border bg-white p-6 md:p-8 relative">
+      <div class="absolute -top-3 left-8 tape px-4 py-1 text-xs font-bold uppercase tracking-wider border border-ink">Official Campus Board</div>
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+        <div>
+          <h1 class="font-serif text-5xl md:text-7xl font-extrabold tracking-tight">FOUND.</h1>
+          <p class="font-serif italic text-lg md:text-xl text-gray-700 mt-1">Lost things deserve a way home.</p>
+        </div>
+        <button onclick="openModal('reportModal')" class="paper-border bg-accentYellow px-6 py-3 font-bold hover:bg-yellow-400 transition-all flex items-center gap-2 text-lg">
+          <span>📍</span> Post a Notice
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT GRID -->
+  <main class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+
+    <!-- LEFT COLUMN: SEARCH, MAP & BULLETIN FEED (2 COLS) -->
+    <div class="lg:col-span-2 space-y-8">
+
+      <!-- SEARCH & FILTERS -->
+      <section class="paper-border bg-white p-6 space-y-4">
+        <h2 class="font-serif text-2xl font-bold border-b-2 border-ink pb-2">🔎 Notice Search</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <input type="text" id="searchInput" oninput="renderItems()" placeholder="Search item (e.g. Wallet, AirPods)..." class="paper-border-sm p-2 w-full focus:outline-none">
+          <select id="locationFilter" onchange="renderItems()" class="paper-border-sm p-2 w-full bg-white">
+            <option value="ALL">All Locations</option>
+            <option value="Library">Library</option>
+            <option value="Canteen">Canteen</option>
+            <option value="Lab">Lab</option>
+            <option value="Parking">Parking</option>
+            <option value="Sports Complex">Sports Complex</option>
+          </select>
+          <select id="typeFilter" onchange="renderItems()" class="paper-border-sm p-2 w-full bg-white">
+            <option value="ALL">All Reports</option>
+            <option value="LOST">Lost Items</option>
+            <option value="FOUND">Found Items</option>
+            <option value="REUNITED">Reunited</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- INTERACTIVE CAMPUS MAP -->
+      <section class="paper-border bg-white p-6">
+        <div class="flex justify-between items-center mb-4 border-b-2 border-ink pb-2">
+          <h2 class="font-serif text-2xl font-bold">🗺️ Campus Hotspots</h2>
+          <span class="text-xs font-bold uppercase tracking-wider bg-gray-100 px-2 py-1 border border-ink">Click zone to filter</span>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <button onclick="filterByLocation('Library')" class="paper-border-sm p-4 text-left hover:bg-yellow-50 transition relative">
+            <div class="font-bold text-lg">📚 Library</div>
+            <div id="count-Library" class="text-xs text-gray-600 font-bold mt-1">0 active reports</div>
+          </button>
+          <button onclick="filterByLocation('Canteen')" class="paper-border-sm p-4 text-left hover:bg-yellow-50 transition relative">
+            <div class="font-bold text-lg">☕ Canteen</div>
+            <div id="count-Canteen" class="text-xs text-gray-600 font-bold mt-1">0 active reports</div>
+          </button>
+          <button onclick="filterByLocation('Lab')" class="paper-border-sm p-4 text-left hover:bg-yellow-50 transition relative">
+            <div class="font-bold text-lg">💻 Science Lab</div>
+            <div id="count-Lab" class="text-xs text-gray-600 font-bold mt-1">0 active reports</div>
+          </button>
+          <button onclick="filterByLocation('Parking')" class="paper-border-sm p-4 text-left hover:bg-yellow-50 transition relative">
+            <div class="font-bold text-lg">🅿️ Parking Lot</div>
+            <div id="count-Parking" class="text-xs text-gray-600 font-bold mt-1">0 active reports</div>
+          </button>
+          <button onclick="filterByLocation('Sports Complex')" class="paper-border-sm p-4 text-left hover:bg-yellow-50 transition relative">
+            <div class="font-bold text-lg">🏀 Sports Complex</div>
+            <div id="count-Sports Complex" class="text-xs text-gray-600 font-bold mt-1">0 active reports</div>
+          </button>
+          <button onclick="filterByLocation('ALL')" class="paper-border-sm p-4 text-center bg-gray-100 hover:bg-gray-200 transition">
+            <div class="font-bold text-sm">Clear Map Filter</div>
+          </button>
+        </div>
+      </section>
+
+      <!-- POSSIBLE MATCHES BANNER -->
+      <section id="matchBanner" class="hidden paper-border bg-yellow-100 p-4 border-l-8 border-l-stampRed">
+        <h3 class="font-bold text-lg flex items-center gap-2">🤝 Possible Match Detected!</h3>
+        <p class="text-sm text-gray-700 mt-1" id="matchDetails"></p>
+      </section>
+
+      <!-- BULLETIN FEED -->
+      <section>
+        <h2 class="font-serif text-3xl font-bold mb-4">📌 Campus Feed</h2>
+        <div id="itemList" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Item Cards rendered here -->
+        </div>
+      </section>
+
+    </div>
+
+    <!-- RIGHT COLUMN: LEADERBOARD & REUNION STORIES (1 COL) -->
+    <div class="space-y-8">
+
+      <!-- LEADERBOARD -->
+      <section class="paper-border bg-white p-6 relative">
+        <div class="absolute -top-3 right-6 tape px-3 py-0.5 text-xs font-bold uppercase border border-ink">Top Finders</div>
+        <h2 class="font-serif text-2xl font-bold border-b-2 border-ink pb-2 mb-4">🏆 Campus Helpers</h2>
+        <ol id="leaderboard" class="space-y-3 font-medium">
+          <!-- Leaderboard rendered here -->
+        </ol>
+      </section>
+
+      <!-- REUNION STORIES -->
+      <section class="paper-border bg-white p-6">
+        <h2 class="font-serif text-2xl font-bold border-b-2 border-ink pb-2 mb-4">❤️ Reunion Stories</h2>
+        <div id="storiesContainer" class="space-y-4">
+          <!-- Reunion stories rendered here -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- MODAL: REPORT NOTICE -->
+  <div id="reportModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4 z-50">
+    <div class="paper-border bg-paper w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto relative">
+      <button onclick="closeModal('reportModal')" class="absolute top-4 right-4 font-bold text-xl">✕</button>
+      <h2 class="font-serif text-3xl font-bold mb-4 border-b-2 border-ink pb-2">Post a Notice</h2>
+      <form id="reportForm" onsubmit="handleReportSubmit(event)" class="space-y-4">
+        <div>
+          <label class="block font-bold text-sm mb-1">Notice Type</label>
+          <select id="formType" class="paper-border-sm p-2 w-full bg-white font-bold">
+            <option value="LOST">I Lost Something 🔴</option>
+            <option value="FOUND">I Found Something 🔵</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold text-sm mb-1">Item Title</label>
+          <input type="text" id="formTitle" required placeholder="e.g. Sony Headphones" class="paper-border-sm p-2 w-full">
+        </div>
+        <div>
+          <label class="block font-bold text-sm mb-1">Location</label>
+          <select id="formLocation" class="paper-border-sm p-2 w-full bg-white">
+            <option value="Library">Library</option>
+            <option value="Canteen">Canteen</option>
+            <option value="Lab">Lab</option>
+            <option value="Parking">Parking</option>
+            <option value="Sports Complex">Sports Complex</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold text-sm mb-1">Photo URL (Optional)</label>
+          <input type="url" id="formImage" placeholder="https://images.unsplash.com/..." class="paper-border-sm p-2 w-full">
+        </div>
+        <div>
+          <label class="block font-bold text-sm mb-1">Secret Identification Question (For Claims)</label>
+          <input type="text" id="formQuestion" required placeholder="e.g. What color is the sticker on the back?" class="paper-border-sm p-2 w-full">
+        </div>
+        <div>
+          <label class="block font-bold text-sm mb-1">Expected Secret Answer</label>
+          <input type="text" id="formAnswer" required placeholder="e.g. Red star" class="paper-border-sm p-2 w-full">
+        </div>
+        <div>
+          <label class="block font-bold text-sm mb-1">Your Name / Handle</label>
+          <input type="text" id="formReporter" required placeholder="e.g. Alex (CS '25)" class="paper-border-sm p-2 w-full">
+        </div>
+        <button type="submit" class="paper-border bg-accentYellow w-full py-3 font-bold hover:bg-yellow-400">Publish Notice</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CLAIM VERIFICATION -->
+  <div id="claimModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4 z-50">
+    <div class="paper-border bg-paper w-full max-w-md p-6 relative">
+      <button onclick="closeModal('claimModal')" class="absolute top-4 right-4 font-bold text-xl">✕</button>
+      <h2 class="font-serif text-2xl font-bold mb-2">🔐 Verify Ownership</h2>
+      <p class="text-sm text-gray-700 mb-4" id="claimQuestionPrompt"></p>
+      <form id="claimForm" onsubmit="handleClaimSubmit(event)" class="space-y-4">
+        <input type="hidden" id="claimItemId">
+        <div>
+          <label class="block font-bold text-sm mb-1">Your Answer</label>
+          <input type="text" id="claimAnswerInput" required placeholder="Type the secret detail..." class="paper-border-sm p-2 w-full">
+        </div>
+        <div>
+          <label class="block font-bold text-sm mb-1">Your Name</label>
+          <input type="text" id="claimantName" required placeholder="Your full name" class="paper-border-sm p-2 w-full">
+        </div>
+        <button type="submit" class="paper-border bg-stampGreen text-white w-full py-3 font-bold hover:bg-green-800">Submit Verification</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="max-w-6xl mx-auto w-full mt-8 border-t-2 border-ink pt-4 text-center text-xs font-bold uppercase tracking-widest text-gray-600">
+    FOUND Campus Platform • Built with HTML, Tailwind CSS & Vanilla JavaScript
+  </footer>
+
+  <!-- APPLICATION LOGIC -->
+  <script>
+    // SEED INITIAL DATA
+    const defaultItems = [
+      {
+        id: '1',
+        type: 'LOST',
+        title: 'Black Leather Wallet',
+        location: 'Library',
+        date: 'Today, 10:15 AM',
+        image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=400',
+        question: 'What card brand is visible in the front slot?',
+        answer: 'Visa',
+        reporter: 'Jordan M.',
+        status: 'OPEN'
+      },
+      {
+        id: '2',
+        type: 'FOUND',
+        title: 'AirPods Pro Case',
+        location: 'Canteen',
+        date: 'Yesterday, 3:30 PM',
+        image: 'https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?auto=format&fit=crop&q=80&w=400',
+        question: 'Is there a case cover on it?',
+        answer: 'Yes blue silicone',
+        reporter: 'Sam K.',
+        status: 'OPEN'
+      },
+      {
+        id: '3',
+        type: 'REUNITED',
+        title: 'Student ID Card (CS Dept)',
+        location: 'Lab',
+        date: '2 days ago',
+        image: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&q=80&w=400',
+        question: 'What is the last name on the card?',
+        answer: 'Patel',
+        reporter: 'Taylor S.',
+        status: 'REUNITED',
+        claimedBy: 'Priya Patel',
+        story: 'Taylor found it near Lab 3 and returned it within 20 minutes!'
+      }
+    ];
+
+    const defaultHelpers = [
+      { name: 'Taylor S.', returns: 5 },
+      { name: 'Sam K.', returns: 3 },
+      { name: 'Chris P.', returns: 2 }
+    ];
+
+    // LOCAL STORAGE LOAD
+    let items = JSON.parse(localStorage.getItem('found_items')) || defaultItems;
+    let helpers = JSON.parse(localStorage.getItem('found_helpers')) || defaultHelpers;
+
+    function saveState() {
+      localStorage.setItem('found_items', JSON.stringify(items));
+      localStorage.setItem('found_helpers', JSON.stringify(helpers));
+    }
+
+    // RENDER FUNCTIONS
+    function renderItems() {
+      const listEl = document.getElementById('itemList');
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const locFilter = document.getElementById('locationFilter').value;
+      const typeFilter = document.getElementById('typeFilter').value;
+
+      listEl.innerHTML = '';
+
+      const filtered = items.filter(item => {
+        const matchesSearch = item.title.toLowerCase().includes(search);
+        const matchesLoc = locFilter === 'ALL' || item.location === locFilter;
+        const matchesType = typeFilter === 'ALL' || item.type === typeFilter || (typeFilter === 'REUNITED' && item.status === 'REUNITED');
+        return matchesSearch && matchesLoc && matchesType;
+      });
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<div class="col-span-full paper-border bg-white p-8 text-center italic font-serif">No notices match your current filters.</div>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const isReunited = item.status === 'REUNITED';
+        const stampClass = item.type === 'LOST' ? 'text-stampRed border-stampRed' : 'text-stampBlue border-stampBlue';
+        const badgeText = isReunited ? 'REUNITED ✓' : item.type;
+
+        const card = document.createElement('div');
+        card.className = `paper-border bg-white p-4 relative flex flex-col justify-between ${isReunited ? 'opacity-75' : ''}`;
+        card.innerHTML = `
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <span class="border-2 font-bold text-xs px-2 py-0.5 tracking-wider ${isReunited ? 'text-stampGreen border-stampGreen' : stampClass}">
+                ${badgeText}
+              </span>
+              <span class="text-xs text-gray-500 font-bold">${item.date}</span>
+            </div>
+            ${item.image ? `<div class="polaroid my-3"><img src="${item.image}" alt="${item.title}" class="w-full h-40 object-cover"></div>` : ''}
+            <h3 class="font-serif font-bold text-xl my-1">${item.title}</h3>
+            <p class="text-sm text-gray-600 font-medium">📍 <strong>Location:</strong> ${item.location}</p>
+            <p class="text-sm text-gray-600 font-medium">👤 <strong>Posted by:</strong> ${item.reporter}</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-gray-200">
+            ${isReunited 
+              ? `<div class="text-xs font-bold text-stampGreen italic">Reunited with ${item.claimedBy}</div>`
+              : `<button onclick="openClaimModal('${item.id}')" class="paper-border-sm bg-accentYellow w-full py-1.5 font-bold text-xs uppercase hover:bg-yellow-400">Claim / Verify</button>`
+            }
+          </div>
+        `;
+        listEl.appendChild(card);
+      });
+
+      updateMapCounts();
+      checkForMatches();
+      renderSidebar();
+    }
+
+    function updateMapCounts() {
+      const locations = ['Library', 'Canteen', 'Lab', 'Parking', 'Sports Complex'];
+      locations.forEach(loc => {
+        const count = items.filter(i => i.location === loc && i.status !== 'REUNITED').length;
+        const el = document.getElementById(`count-${loc}`);
+        if (el) el.innerText = `${count} active notice${count === 1 ? '' : 's'}`;
+      });
+    }
+
+    function filterByLocation(loc) {
+      document.getElementById('locationFilter').value = loc;
+      renderItems();
+    }
+
+    function checkForMatches() {
+      const lost = items.filter(i => i.type === 'LOST' && i.status === 'OPEN');
+      const found = items.filter(i => i.type === 'FOUND' && i.status === 'OPEN');
+      
+      let match = null;
+      for (let l of lost) {
+        for (let f of found) {
+          if (l.location === f.location) {
+            match = { lost: l, found: f };
+            break;
+          }
+        }
+      }
+
+      const banner = document.getElementById('matchBanner');
+      if (match) {
+        banner.classList.remove('hidden');
+        document.getElementById('matchDetails').innerText = 
+          `Notice matching location (${match.lost.location}): Lost "${match.lost.title}" vs Found "${match.found.title}".`;
+      } else {
+        banner.classList.add('hidden');
+      }
+    }
+
+    function renderSidebar() {
+      // Leaderboard
+      const lbEl = document.getElementById('leaderboard');
+      lbEl.innerHTML = '';
+      helpers.sort((a, b) => b.returns - a.returns).slice(0, 5).forEach((h, idx) => {
+        lbEl.innerHTML += `
+          <li class="flex justify-between items-center border-b border-gray-100 pb-1">
+            <span><strong>0${idx + 1}.</strong> ${h.name}</span>
+            <span class="text-xs border border-ink px-2 py-0.5 bg-yellow-100 font-bold">${h.returns} returned</span>
+          </li>
+        `;
+      });
+
+      // Reunion Stories
+      const storiesEl = document.getElementById('storiesContainer');
+      storiesEl.innerHTML = '';
+      const reunited = items.filter(i => i.status === 'REUNITED' && i.story);
+      if (reunited.length === 0) {
+        storiesEl.innerHTML = `<p class="text-xs italic text-gray-500">No stories yet. Return an item to build campus history!</p>`;
+      } else {
+        reunited.forEach(r => {
+          storiesEl.innerHTML += `
+            <div class="paper-border-sm p-3 bg-yellow-50 text-xs space-y-1">
+              <div class="font-bold text-stampGreen">✓ ${r.title}</div>
+              <div class="italic text-gray-700">"${r.story}"</div>
+            </div>
+          `;
+        });
+      }
+    }
+
+    // MODAL HELPERS
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+      document.getElementById(id).classList.add('flex');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+      document.getElementById(id).classList.remove('flex');
+    }
+
+    // FORM SUBMISSIONS
+    function handleReportSubmit(e) {
+      e.preventDefault();
+      const newItem = {
+        id: Date.now().toString(),
+        type: document.getElementById('formType').value,
+        title: document.getElementById('formTitle').value,
+        location: document.getElementById('formLocation').value,
+        date: 'Just now',
+        image: document.getElementById('formImage').value || null,
+        question: document.getElementById('formQuestion').value,
+        answer: document.getElementById('formAnswer').value,
+        reporter: document.getElementById('formReporter').value,
+        status: 'OPEN'
+      };
+
+      items.unshift(newItem);
+      saveState();
+      renderItems();
+      closeModal('reportModal');
+      document.getElementById('reportForm').reset();
+    }
+
+    function openClaimModal(id) {
+      const item = items.find(i => i.id === id);
+      if(!item) return;
+      document.getElementById('claimItemId').value = item.id;
+      document.getElementById('claimQuestionPrompt').innerText = `Verification question from ${item.reporter}: "${item.question}"`;
+      openModal('claimModal');
+    }
+
+    function handleClaimSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById('claimItemId').value;
+      const answer = document.getElementById('claimAnswerInput').value;
+      const claimant = document.getElementById('claimantName').value;
+
+      const item = items.find(i => i.id === id);
+      if (item) {
+        if (answer.trim().toLowerCase() === item.answer.trim().toLowerCase()) {
+          item.status = 'REUNITED';
+          item.claimedBy = claimant;
+          item.story = `${claimant} successfully verified ownership and recovered the item.`;
+
+          // Update helper score
+          const helper = helpers.find(h => h.name.toLowerCase() === item.reporter.toLowerCase());
+          if (helper) {
+            helper.returns += 1;
+          } else {
+            helpers.push({ name: item.reporter, returns: 1 });
+          }
+
+          saveState();
+          renderItems();
+          closeModal('claimModal');
+          document.getElementById('claimForm').reset();
+          alert('🎉 Verification successful! Item marked as Reunited.');
+        } else {
+          alert('❌ Verification failed. Secret answer does not match.');
+        }
+      }
+    }
+
+    // INITIAL RENDER
+    renderItems();
+  </script>
+</body>
+</html>
